@@ -1,9 +1,10 @@
 from rest_framework import generics
 from post.models import Post, Event
 from .serializers import PostSerializer, EventSerializer
-
+from rest_framework.permissions import IsAdminUser
 
 class PostList(generics.ListCreateAPIView):
+    permission_classes = [IsAdminUser]
     queryset = Post.objects.all()
     serializer_class = PostSerializer
 
