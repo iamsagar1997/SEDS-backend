@@ -2,7 +2,7 @@ from email import message
 from rest_framework import generics
 from post.models import Post, Event
 from .serializers import PostSerializer, EventSerializer
-from rest_framework.permissions import IsAdminUser, DjangoModelPermissions, BasePermission
+from rest_framework.permissions import IsAdminUser, DjangoModelPermissions, BasePermission, IsAuthenticatedOrReadOnly
 
 class PostUserWritePermission(BasePermission):
     message = 'Editing post is restricted to author only'
@@ -16,24 +16,24 @@ class PostUserWritePermission(BasePermission):
 
 
 class PostList(generics.ListCreateAPIView):
-    permission_classes = [DjangoModelPermissions]
+    permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = Post.objects.all()
     serializer_class = PostSerializer
 
 
-class PostDetail(generics.RetrieveAPIView, PostUserWritePermission):
+class PostDetail(generics.RetrieveUpdateDestroyAPIView, PostUserWritePermission):
     permission_classes = [PostUserWritePermission]
     queryset = Post.objects.all()
     serializer_class = PostSerializer
 
 
 class EventList(generics.ListCreateAPIView):
-    permission_classes = [DjangoModelPermissions]
+    permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = Post.objects.all()
     serializer_class = EventSerializer
 
 
-class EventDetail(generics.RetrieveAPIView, PostUserWritePermission):
+class EventDetail(generics.RetrieveUpdateDestroyAPIView, PostUserWritePermission):
     permission_classes = [PostUserWritePermission]
     queryset = Post.objects.all()
     serializer_class = EventSerializer
