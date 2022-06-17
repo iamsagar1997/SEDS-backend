@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from users.models import NewUser
 
-
 class CustomUserSerializer(serializers.ModelSerializer):
     """
     Currently unused in preference of the below.
