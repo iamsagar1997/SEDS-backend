@@ -31,10 +31,10 @@ class Post(models.Model):
     )
 
     category = models.ForeignKey(Category, on_delete=models.PROTECT, default=1)
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=255, null=True)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='post')
     status = models.CharField(max_length=10, choices=options, default='published')
-    slug = models.SlugField(max_length=250, unique_for_date='published')
+    slug = models.SlugField(unique='True')
     country = models.CharField(max_length=255,blank=True)
     assignment = models.CharField(max_length=255, null=True)
     location = models.CharField(max_length=255)
@@ -50,6 +50,7 @@ class Post(models.Model):
     objects = models.Manager()  
     postobjects = PostObjects()
 
+
     def __str__(self):
-        return self.Title
+        return self.title
     
